@@ -1,0 +1,126 @@
+#include <cs50.h>
+#include <stdio.h>
+#include <math.h>
+#include <ctype.h>
+#include <string.h>
+#include <stdlib.h>
+
+
+int main(int argc, string argv[]) //main function that accepts command line arguments
+{
+    bool checker = false; //boolean variable to validate the command-line argument
+    bool numberOfChar = false; //boolean variable to check the number of characters
+    bool alphaChar = false; //boolean variable to check whether the characters are alphabetical or not
+    bool repeat = false; //boolean variable to check whether two characters are equal or not
+    int totalChecker = 1; // Variable used to validate the command-line input
+
+    if (argc == 2) //Conditional to validate that the user enters only one input
+    {
+        checker = true; //boolean variable used for validation
+
+        if (strlen(argv[1]) == 26) //Condition to check that the number of characters is valid
+        {
+            numberOfChar = true;
+        }
+
+        else
+        {
+            numberOfChar = false;
+            if (numberOfChar == false)
+            {
+                printf("key must contain 26 characters\n");
+                return 1;
+            }
+        }
+
+
+        for (int i = 0; i < strlen(argv[1]); i++) //Loop for checking that the user enters only alphabetic characters in the key
+        {
+            if (isalpha(argv[1][i]))
+            {
+                //alphaChar = true;
+
+                for (int j = 0; j < strlen(argv[1]); j++) //Loop for checking that the key doesn't have repeated characters
+                {
+                    for (int k = 1; k < strlen(argv[1]); k++)
+                    {
+                        if (j + k < 26)
+                        {
+                            if (argv[1][j] == argv[1][j + k])
+                            {
+                                repeat = true;
+                                printf("key  must not contain repeated characters\n");
+                                //char repeated = argv[1][j];
+                                totalChecker = 0;
+                                return 1;
+                            }
+                            else
+                            {
+                                repeat = false;
+                                totalChecker = 1;
+                            }
+                        }
+
+                    }
+                }
+            }
+            else
+            {
+                alphaChar = false;
+                printf("key must only contain alphabetical characters\n");
+                return 1;
+            }
+
+        }
+
+
+        if (totalChecker == 1)
+        {
+            string s = get_string("plaintext: "); //Prompting the user for a text
+            printf("ciphertext: ");
+            char letra; //Variable used to print the cipher
+
+            for (int i = 0; i < strlen(s); i++) //Loop for checking if the character is lowercase or uppercase
+            {
+                if (isalpha(s[i]))
+                {
+                    if (isupper(s[i])) //Option for uppercase letters.
+                    {
+                        //printf("%i ", s[i]);
+                        int corrector = s[i] - 65;
+                        //printf("%i ", corrector);
+                        for (int j = 0; j < strlen(argv[1]); j++)
+                        {
+                            letra = toupper(argv[1][corrector]); //converting to uppercase before printing
+                        }
+                        printf("%c", letra);
+                    }
+                    else if (islower(s[i])) //Option for lowercase letters.
+                    {
+                        int corrector = s[i] - 97;
+                        for (int j = 0; j < strlen(argv[1]); j++)
+                        {
+                            letra = tolower(argv[1][corrector]); //converting to lowercase before printing
+                        }
+                        printf("%c", letra);
+                    }
+                }
+                else
+                {
+                    letra = s[i];
+                    printf("%c", letra);
+                }
+
+            }
+            printf("\n");
+        }
+    }
+
+    if (argc != 2)
+    {
+        printf("Usage: ./substitution key\n");
+        return 1;
+    }
+
+
+}
